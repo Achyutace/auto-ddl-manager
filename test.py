@@ -12,9 +12,12 @@ def extract_dict_lists(s):
     返回:
         list: 包含所有提取出的字典列表的列表。
     """
+    s = s.replace('\n', '').replace('\r', '').replace(' ', '')
+    
+    print("s:",s)
     pattern_one = r'\[\{[^\]]*\}\]'
     s_new = re.search(pattern_one, s).group()
-    print(s_new)
+    print("s_new",s_new)
     pattern_two = r'\{[^\}]*\}'
     matches = re.findall(pattern_two, s_new)
     print("matches:",matches)
@@ -38,12 +41,10 @@ def extract_dict_lists(s):
 def main():
     # 示例文本
     sample_text = """
-    这里有一些数据：
-    - 列表1: [{ "name": "Alice", "age": 30 }, { "name": "Bob", "age": 25 }]
-    - 列表2: [{ "product": "苹果", "price": 3.5 }, { "product": "香蕉", "price": 2.0 }]
-    - 列表3: []
-    - 列表4: [{ "id": 1 }, { "id": 2, "active": true }]
-    [?]
+    [
+    {"课程": "买衣服", "截止日期": "2025年2月28日 23时"},
+    {"课程": "买裤子", "截止日期": "2025年2月28日 23时"}
+]
     """
     simple_text = "[a]"
     # 提取字典列表

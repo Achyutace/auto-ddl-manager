@@ -3,9 +3,8 @@ import json
 import re
 import yaml
 
-from openai import OpenAI
 from datetime import datetime
-from json import JSONDecoder
+
 
 
 '''
@@ -19,26 +18,7 @@ api_key = config['api_key']
 api_base = config['api_base']
 api_model = config['api_model']
 
-formal_prompt = '返回一个列表，每一项是一个字典，分别是课程，作业和截止日期（某年某月某日几点，如果没有提到几点默认23点）。'
-
-def extract_json_objects(text, decoder=JSONDecoder()):
-    """Find JSON objects in text, and yield the decoded JSON data
-
-    Does not attempt to look for JSON arrays, text, or other JSON types outside
-    of a parent JSON object.
-
-    """
-    pos = 0
-    while True:
-        match = text.find('{', pos)
-        if match == -1:
-            break
-        try:
-            result, index = decoder.raw_decode(text[match:])
-            yield result
-            pos = match + index
-        except ValueError:
-            pos = match + 1
+formal_prompt = '只用返回一个列表，不需要描述性文字。每一项是一个字典，分别是课程，任务和截止日期（某年某月某日几点，如果没有提到几点默认23点）。'
 
 def extract_dict_lists(s):
     """
@@ -50,10 +30,15 @@ def extract_dict_lists(s):
     返回:
         list: 包含第一个提取出的字典列表中的所有字典的列表。
     """
-    pattern_one = r'\[\{[^\]]*\}\]'
-    s_new = re.search(pattern_one, s).group()
-    pattern_two = r'\{[^\}]*\}'
-    matches = re.findall(pattern_two, s_new)
+    try:
+        s = s.replace('\n', '').replace('\r', '').replace(' ', '')
+        pattern_one = r'\[\{[^\]]*\}\]'
+        s_new = re.search(pattern_one, s).group()
+        pattern_two = r'\{[^\}]*\}'
+        matches = re.findall(pattern_two, s_new)
+    except AttributeError as e:
+        print(f"无法解析的字符串: {s}\n错误信息: {e}")
+        return
     
     dict_lists = []
     for match in matches:
@@ -63,8 +48,7 @@ def extract_dict_lists(s):
             continue
 
         # 处理可能的多余空格
-        cleaned_match = match.replace(' ', '')
-        cleaned_match = cleaned_match.replace('\'','\"' )
+        cleaned_match = match.replace('\'','\"' )
         print(cleaned_match)
         # 替换单个空格（如果有），然后使用 json.loads 解析为字典列表
         try:
@@ -115,37 +99,3 @@ def today_info():
     today_str = f'今天是{year}年{month}月{day}日，星期{day_of_week_cn}。'
     return today_str
 
-def handle_input(words):
-    '''
-    parse words: 自然语言输入
-    '''
-    client = OpenAI(api_key = api_key, base_url = api_base)
-    response = client.chat.completions.create(
-        model = api_model,
-        messages = [
-            {"role":"system","content":"你是一个ai-deadline-manager助手，请按照给定输入格式返回列表。"},
-            {"role":"user","content":today_info()+words+formal_prompt}
-        ],
-        stream=False
-    )
-    print(response.choices[0].message.content)
-    return extract_dict_lists(response.choices[0].message.content)
-
-if __name__ == "__main__":
-    # 测试用例
-    words = '代组作业：“《离散数学教程》习题十五，p. 238: 9”，本次作业ddl暂定3月5日。算分作业：算分作业1，已发邮箱，ddl这周五。'
-    # handle_input(words)
-
-    sample_text = """
-    这里有一些数据：
-    - 列表1: [{ "name": "Alice", "age": 30 }, { "name": "Bob", "age": 25 }]
-    - 列表2: [{ "product": "苹果", "price": 3.5 }, { "product": "香蕉", "price": 2.0 }]
-    - 列表3: []
-    - 列表4: [{ "id": 1 }, { "id": 2, "active": true }]
-    """
-
-    extracted = extract_dict_lists(sample_text)
-    print(extracted)
-    for idx, dl in enumerate(extracted, 1):
-        print(f"字典列表 {idx}: {dl}")
-        print_dic_info(dl, f'dl{idx}', tag='\t')

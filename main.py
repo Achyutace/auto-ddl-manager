@@ -18,4 +18,4 @@ if __name__ == "__main__":
     app = TodoApp(root, task_manager=ini_task_manager)
     root.mainloop()
     with open(f"{main_dir}/data/data.json", "w", encoding='utf-8') as f:
-        json.dump(app.task_manager.view_tasks(), f)
+        json.dump(app.task_manager.view_tasks(), f, ensure_ascii=False, indent=4)

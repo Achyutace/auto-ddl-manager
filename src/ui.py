@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from .task_manager import TaskManager
-from .utils import handle_input
+from .handle_input import handle_input
 
 class TodoApp:
     '''
@@ -71,7 +71,7 @@ class TodoApp:
         print('tasks:', tasks)
         for i, task in enumerate(tasks):
             print(task)
-            self.task_listbox.insert(tk.END, f"{i + 1}. {task['作业']} - {task['截止日期']}")
+            self.task_listbox.insert(tk.END, f"{i + 1}. {task['任务']} - {task['截止日期']}")
 
     def delete_task(self):
         """
@@ -85,7 +85,7 @@ class TodoApp:
         index = selected_index[0]
         deleted_task = self.task_manager.delete_task(index)
         if deleted_task:
-            messagebox.showinfo("成功", f"任务已删除：{deleted_task['作业']}")
+            messagebox.showinfo("成功", f"任务已删除：{deleted_task['任务']}")
             self.view_tasks()  # 刷新任务列表
 
     def check_reminders(self):

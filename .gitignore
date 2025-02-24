@@ -1,3 +1,5 @@
 /config.yaml
 
 /data/
+
+/src/__pycache__/
