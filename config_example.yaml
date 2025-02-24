@@ -1,0 +1,5 @@
+# 一个config的示例，这里以kimi为例
+api:
+  key: sk-CrazyThursdayVMe50       # your api key
+  base: https://api.moonshot.cn/v1 # your api base
+  model: moonshot-v1-8k            # your api model
