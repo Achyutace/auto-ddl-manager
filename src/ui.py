@@ -20,7 +20,7 @@ class TodoApp:
         创建UI组件。
         """
         # 输入框和按钮
-        self.input_label = tk.Label(self.root, text="输入任务（格式：YYYY-MM-DD 任务内容）：")
+        self.input_label = tk.Label(self.root, text="输入任务，可输入自然语言：")
         self.input_label.pack()
 
         self.input_text = tk.Text(self.root, height=5, width=40)
@@ -42,6 +42,8 @@ class TodoApp:
         # 提醒按钮
         self.reminder_button = tk.Button(self.root, text="检查提醒", command=self.check_reminders)
         self.reminder_button.pack()
+
+        self.view_tasks()
 
     def add_task(self):
         """

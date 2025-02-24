@@ -17,7 +17,9 @@ pip install -r requirements.txt
 ```
 
 > Step 1: 填写配置信息
-> 在config_example.yaml中填写api_key，api_base和api_model，并改名为config.yaml
+
+- 在config_example.yaml中填写api_key，api_base和api_model，并改名为config.yaml
+- 新建data，并在data中创建data.json
 
 > Step 2: 启动
 ```
