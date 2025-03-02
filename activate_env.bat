@@ -1,0 +1,6 @@
+@echo off
+echo Activating Conda Environment...
+call activate ddlmanager
+echo Environment activated. Running main.py...
+python "C:/Users/nattin/Desktop/newWorld/ai-daily-manager/main.py"
+pause

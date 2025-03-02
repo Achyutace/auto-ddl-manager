@@ -1,3 +1,4 @@
+#!C:/Users/nattin/Anaconda3/envs/ddlmanager/python.exe
 import os
 import json
 import tkinter as tk

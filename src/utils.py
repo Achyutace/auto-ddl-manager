@@ -49,7 +49,6 @@ def extract_dict_lists(s):
 
         # 处理可能的多余空格
         cleaned_match = match.replace('\'','\"' )
-        print(cleaned_match)
         # 替换单个空格（如果有），然后使用 json.loads 解析为字典列表
         try:
             dict_list = json.loads(f'{cleaned_match}')
@@ -99,3 +98,18 @@ def today_info():
     today_str = f'今天是{year}年{month}月{day}日，星期{day_of_week_cn}。'
     return today_str
 
+def check_task_format(dict):
+    '''
+    检查字典中是否有课程、任务和截止日期三项
+    '''
+
+    required_keys = ['课程', '任务', '截止日期']
+    
+    # 遍历需要检查的键
+    for key in required_keys:
+        # 如果某个键不在字典中，返回False
+        if key not in dict:
+            return False
+    
+    # 如果所有需要的键都在字典中，返回True
+    return True

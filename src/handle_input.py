@@ -16,9 +16,9 @@ def handle_input(words):
         stream=False
     )
     reply = response.choices[0].message.content
-    print("reply:",reply)
+    print("reply:\n",reply)
     tem = extract_dict_lists(reply)
-    print(tem)
+    # print(tem)
     return tem
 
 if __name__ == "__main__":

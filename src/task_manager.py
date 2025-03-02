@@ -1,4 +1,5 @@
 from datetime import datetime
+from .utils import check_task_format
 
 class TaskManager:
     def __init__(self, ini_tasks=None):
@@ -9,8 +10,12 @@ class TaskManager:
         添加多个任务到任务列表。
         """
         if tasks is not None:
-            for task in tasks:
-                print("已添加：", task)
+            print("正在添加任务...")
+            for i, task in enumerate(tasks):
+                if not check_task_format(task):
+                    print(f"任务 {i} 格式错误，跳过。")
+                    continue
+                print(i, '.:', task["任务"])
                 self.tasks.append(task)
 
     def view_tasks(self):

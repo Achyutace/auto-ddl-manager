@@ -68,7 +68,6 @@ class TodoApp:
         """
         self.task_listbox.delete(0, tk.END)  # 清空列表框
         tasks = self.task_manager.view_tasks()
-        print('tasks:', tasks)
         for i, task in enumerate(tasks):
             print(task)
             self.task_listbox.insert(tk.END, f"{i + 1}. {task['任务']} - {task['截止日期']}")
